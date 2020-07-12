@@ -2,6 +2,19 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 
 class Application extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      clippings: [
+        {
+          content: 'Test',
+          id: 123,
+        },
+      ],
+    };
+  }
+
   render() {
     return (
       <div className="container">
@@ -13,11 +26,9 @@ class Application extends Component {
 
         <section className="content">
           <div className="clippings-list">
-            <Clipping content={'test'} />
-            <Clipping content={'test'} />
-            <Clipping content={'test'} />
-            <Clipping content={'test'} />
-            <Clipping content={'test'} />
+            {this.state.clippings.map((clippings) => (
+              <Clipping content={clippings.content} key={clippings.id} />
+            ))}
           </div>
         </section>
       </div>
