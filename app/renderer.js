@@ -12,11 +12,33 @@ class Application extends Component {
         </header>
 
         <section className="content">
-          <div className="clippings-list"></div>
+          <div className="clippings-list">
+            <Clipping content={'test'} />
+            <Clipping content={'test'} />
+            <Clipping content={'test'} />
+            <Clipping content={'test'} />
+            <Clipping content={'test'} />
+          </div>
         </section>
       </div>
     );
   }
 }
+
+const Clipping = ({ content }) => {
+  return (
+    <article className="clippings-list-item">
+      <div className="clippings-text" disabled>
+        {content}
+      </div>
+      <div className="clipping-controls">
+        <button onClick={() => writeToClipboard(content)}>
+          &rarr; Clipboard
+        </button>
+        <button>Update</button>
+      </div>
+    </article>
+  );
+};
 
 render(<Application />, document.getElementById('application'));
