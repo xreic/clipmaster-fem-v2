@@ -37,16 +37,9 @@ class Application extends Component {
   }
 
   addClipping() {
-    const { clippings } = this.state;
-
     const content = clipboard.readText();
-    const id = Date.now();
 
-    const clipping = { id, content };
-
-    this.setState({
-      clippings: [clipping, ...clippings],
-    });
+    database('clippings').insert({ content }).then(this.fetchClippings);
   }
 
   handleWriteToClipboard() {
