@@ -1,4 +1,11 @@
-import { app, BrowserWindow, globalShortcut } from 'electron';
+import { app, globalShortcut, Menu } from 'electron';
+
+const { menubar } = require('menubar');
+
+const mb = menubar({
+  preloadWindow: true,
+  index: `file://${__dirname}/index.jade`,
+});
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -30,6 +37,22 @@ const createWindow = () => {
     // when you should delete the corresponding element.
     mainWindow = null;
   });
+};
+
+mb.on('ready', () => {
+  const secondaryMenu = Menu.buildFromTemplate([
+    {
+      label: 'Quit',
+      click() {
+        mb.app.quit();
+      },
+      accelerator: 'CommandOrControl+Q',
+    },
+  ]);
+
+  mb.tray.on('right-click', () => {
+    mb.tray.popUpContextMenu(secondaryMenu);
+  });
 
   const createClippingShortcut = globalShortcut.register(
     'CommandOrControl+!',
@@ -54,12 +77,15 @@ const createWindow = () => {
   if (!writeClippingShortcut) {
     console.error('Registration Failed', 'write-to-clipboard');
   }
-};
+});
+mb.on('after-create-window', () => {
+  mb.window.openDevTools();
+});
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+// app.on('ready', createWindow);
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
