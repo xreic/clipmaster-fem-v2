@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 
+import { clipboard } from 'electron';
+
 class Application extends Component {
   constructor() {
     super();
@@ -65,6 +67,10 @@ const Clipping = ({ content }) => {
       </div>
     </article>
   );
+};
+
+const writeToClipboard = (content) => {
+  clipboard.writeText(content);
 };
 
 render(<Application />, document.getElementById('application'));
