@@ -42,6 +42,18 @@ const createWindow = () => {
   if (!createClippingShortcut) {
     console.error('Registration Failed', 'create-clipping');
   }
+
+  const writeClippingShortcut = globalShortcut.register(
+    'CommandOrControl+@',
+    () => {
+      console.log('Going to send a message to write to the clipboard');
+      mainWindow.webContents.send('write-to-clipboard');
+    },
+  );
+
+  if (!writeClippingShortcut) {
+    console.error('Registration Failed', 'write-to-clipboard');
+  }
 };
 
 // This method will be called when Electron has finished

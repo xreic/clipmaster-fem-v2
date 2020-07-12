@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 
-import { clipboard } from 'electron';
+import { clipboard, ipcRenderer } from 'electron';
 
 class Application extends Component {
   constructor() {
@@ -17,6 +17,12 @@ class Application extends Component {
     };
 
     this.addClipping = this.addClipping.bind(this);
+    this.handleWriteToClipboard = this.handleWriteToClipboard.bind(this);
+  }
+
+  componentDidMount() {
+    ipcRenderer.on('create-new-clipping', this.addClipping);
+    ipcRenderer.on('write-to-clipboard', this.handleWriteToClipboard);
   }
 
   addClipping() {
@@ -30,6 +36,11 @@ class Application extends Component {
     this.setState({
       clippings: [clipping, ...clippings],
     });
+  }
+
+  handleWriteToClipboard() {
+    const clipping = this.state.clippings[0];
+    if (clipping) writeToClipboard(clipping.content);
   }
 
   render() {
