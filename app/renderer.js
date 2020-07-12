@@ -13,6 +13,21 @@ class Application extends Component {
         },
       ],
     };
+
+    this.addClipping = this.addClipping.bind(this);
+  }
+
+  addClipping() {
+    const { clippings } = this.state;
+
+    const content = clipboard.readText();
+    const id = Date.now();
+
+    const clipping = { id, content };
+
+    this.setState({
+      clippings: [clipping, ...clippings],
+    });
   }
 
   render() {
